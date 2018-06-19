@@ -59,7 +59,6 @@ def main():
 		observation = env.reset()
 		print(observation)
 		num_steps = 0
-		print("ok")
 		while num_steps < 200:
 			actions = env.get_action_list()
 			print(actions)
