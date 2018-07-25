@@ -17,25 +17,28 @@ class DangEnv(gym.Env):
     def __init__(self):
         self.action_list = ['UP','DOWN','LEFT','RIGHT']
         self.object_goal = [12,12]
+        self.task = 0
+        self.agentX = 5
+        self.agentY = 5
         
     def config(self, param):
         self.params = param  # fault unknow, fix fault by using a tuple: sprite, wall, background loaded from demo
         self.worldMap =[
          [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,2],
+         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,2],
+         [2,2,2,2,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,2,2,2,2,2,2,2,2,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,0,0,2,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
          [2,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
          [2,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
          [2,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,2],
@@ -43,25 +46,31 @@ class DangEnv(gym.Env):
          [2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
          [2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
          [2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+         [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
          [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
         ]
-        self.worldMap =[
-         [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,2],
-         [2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
-         [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
-        ]
+        # self.worldMap =[
+        #  [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        #  [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        #  [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+        #  [2,2,2,2,0,0,0,0,2,2,2,2,2,2,2,2,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,2,0,0,0,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,2,0,0,0,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,2,0,0,0,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,2,2,2,2,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0,2],
+        #  [2,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0,2],
+        #  [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+        # ]
         self.sprite_positions=[          
-          (2, 2, 0),          
+          (2, 2, 0),
+          (2, 15, 0)          # x y z
+        ]
+        self.store=[          
+          (2, 2, 0),
+          (2, 15, 0)          # x y z
         ]
         self.t = time.clock() #time of current frame
         self.oldTime = 0. #time of previous frame
@@ -76,7 +85,7 @@ class DangEnv(gym.Env):
         
         self.f = pygame.font.SysFont(pygame.font.get_default_font(), 20)
         
-        self.wm = WorldManager(self.worldMap,self.sprite_positions, 5, 5, -1, 0, 0, 0.6, self.params)
+        self.wm = WorldManager(self.worldMap,self.sprite_positions, self.agentX, self.agentY, -1, 0, 0, 0.6, self.params)
         self.clock.tick(60)
         self.wm.draw(self.screen)
         self.frameTime = float(self.clock.get_time()) / 1000.0 # frameTime is the time this frame has taken, in seconds
@@ -86,30 +95,32 @@ class DangEnv(gym.Env):
         pygame.display.flip()
 
         # speed modifiers
-        self.moveSpeed = self.frameTime * 10.0 # the constant value is in squares / second
-        self.rotSpeed = self.frameTime * 3.0 # the constant value is in radians / second
+        self.moveSpeed = self.frameTime * 40.0 # the constant value is in squares / second
+        self.rotSpeed = self.frameTime * 40.0 # the constant value is in radians / second
 
     def _reset(self):
         """Resets the state of the environment and returns an initial observation.
         Returns: observation (object): the initial observation of the
             space.
         """
-        self.wm.camera.config(5, 5, -1, 0, 0, 0.6)
+        self.wm.camera.config(self.agentX, self.agentY, -1, 0, 0, 0.6)
         self.draw_screen()
         return self.observation
 
     def _step(self, action):        
         if action == 0:
             moveX = self.wm.camera.x + self.wm.camera.dirx * self.moveSpeed
+            moveX = moveX if moveX <= 24 else self.wm.camera.x
             if(self.worldMap[int(moveX)][int(self.wm.camera.y)]==0 and self.worldMap[int(moveX + 0.1)][int(self.wm.camera.y)]==0):
-                self.wm.camera.x += self.wm.camera.dirx * self.moveSpeed
+                self.wm.camera.x = moveX
             moveY = self.wm.camera.y + self.wm.camera.diry * self.moveSpeed
+            moveY = moveY if moveY <= 24 else self.wm.camera.y
             if(self.worldMap[int(self.wm.camera.x)][int(moveY)]==0 and self.worldMap[int(self.wm.camera.x)][int(moveY + 0.1)]==0):
-                self.wm.camera.y += self.wm.camera.diry * self.moveSpeed
+                self.wm.camera.y = moveY
+        #elif action == 1:
+        #    if(self.worldMap[int(self.wm.camera.x - self.wm.camera.dirx * self.moveSpeed)][int(self.wm.camera.y)] == 0):self.wm.camera.x -= self.wm.camera.dirx * self.moveSpeed
+        #    if(self.worldMap[int(self.wm.camera.x)][int(self.wm.camera.y - self.wm.camera.diry * self.moveSpeed)] == 0):self.wm.camera.y -= self.wm.camera.diry * self.moveSpeed
         elif action == 1:
-            if(self.worldMap[int(self.wm.camera.x - self.wm.camera.dirx * self.moveSpeed)][int(self.wm.camera.y)] == 0):self.wm.camera.x -= self.wm.camera.dirx * self.moveSpeed
-            if(self.worldMap[int(self.wm.camera.x)][int(self.wm.camera.y - self.wm.camera.diry * self.moveSpeed)] == 0):self.wm.camera.y -= self.wm.camera.diry * self.moveSpeed
-        elif action == 2:
             oldDirX = self.wm.camera.dirx
             self.wm.camera.dirx = self.wm.camera.dirx * math.cos(- self.rotSpeed) - self.wm.camera.diry * math.sin(- self.rotSpeed)
             self.wm.camera.diry = oldDirX * math.sin(- self.rotSpeed) + self.wm.camera.diry * math.cos(- self.rotSpeed)
@@ -129,16 +140,24 @@ class DangEnv(gym.Env):
         done = False
         reward = self.reward()
         if reward >= 100: done = True
-        print int(self.wm.camera.x), int(self.wm.camera.y)
+        # print int(self.wm.camera.x), int(self.wm.camera.y)
         return self.observation, reward, done
 
     def reward(self):
+        if self.wm.object_seen == False: return -1 
+        #print("info", self.wm.object_seen)
         reward = -1
-        for x in self.sprite_positions:
-            xx = x[0] - int(self.wm.camera.x)
-            yy = x[1] - int(self.wm.camera.y)
-            if math.sqrt(xx*xx+yy*yy) <= 1.5 :
-                reward = 100
+        pos = self.store[self.task]
+        xx = pos[0] - (self.wm.camera.x)
+        yy = pos[1] - (self.wm.camera.y)
+        if math.sqrt(xx*xx+yy*yy) <= 0.8 :
+            reward = 100
+        # print("task:",self.task)
+        # print("reward:", reward)
+        # print(math.sqrt(xx*xx+yy*yy))
+        # print(pos, xx, yy)
+        # print(self.store)
+        # print("position: ", self.wm.camera.x, self.wm.camera.y)
         return reward
 
     def _render(self, mode='human', close=False):
@@ -156,6 +175,13 @@ class DangEnv(gym.Env):
     def get_action_list(self):
         return self.action_list
 
+    def config_task(self, number = 0):
+        self.task = number
+
+    def config_agent_position(self, x = 5, y = 5):
+        self.agentY = y
+        self.agentX = x
+
 class WorldManager(object):
 
     def __init__(self,worldMap,sprite_positions,x,y,dirx,diry,planex,planey, params):
@@ -167,9 +193,10 @@ class WorldManager(object):
         self.camera = Camera(x,y,dirx,diry,planex,planey)
         self.worldMap = worldMap
         self.sprite_positions = sprite_positions
-
+        self.object_seen = True
         
     def draw(self, surface):
+        
         texWidth = 64
         texHeight = 64
         w = surface.get_width()
@@ -238,6 +265,7 @@ class WorldManager(object):
                 # Check if ray has hit a wall
                 if (self.worldMap[mapX][mapY] > 0): 
                     hit = 1
+                
             # Calculate distance projected on camera direction (oblique distance will give fisheye effect !)
             if (side == 0):
                 #perpWallDist = fabs((mapX - rayPosX + (1 - stepX) / 2) / rayDirX)
@@ -279,6 +307,7 @@ class WorldManager(object):
             surface.blit(pygame.transform.scale(self.images[texNum][texX], (1, lineHeight)), (x, drawStart))
             zBuffer.append(perpWallDist)
 
+
         def sprite_compare(s1, s2):
             import math
             s1Dist = math.sqrt((s1[0] -self.camera.x) ** 2 + (s1[1] -self.camera.y) ** 2)
@@ -292,6 +321,7 @@ class WorldManager(object):
         #draw sprites
         
         self.sprite_positions.sort(sprite_compare)
+        self.object_seen = False
         for sprite in self.sprite_positions:
             #translate sprite position to relative to camera
             spriteX = sprite[0] - self.camera.x;
@@ -319,7 +349,6 @@ class WorldManager(object):
             spriteWidth = abs( int (h / (transformY)))
             drawStartX = -spriteWidth / 2 + spritesurfaceX
             drawEndX = spriteWidth / 2 + spritesurfaceX
-            
             if spriteHeight < 1000:
                 for stripe in range(drawStartX, drawEndX):
                     texX = int(256 * (stripe - (-spriteWidth / 2 + spritesurfaceX)) * texWidth / spriteWidth) / 256
@@ -329,8 +358,8 @@ class WorldManager(object):
                     ##3) it's on the surface (right)
                     ##4) ZBuffer, with perpendicular distance
                     if(transformY > 0 and stripe > 0 and stripe < w and transformY < zBuffer[stripe]):
+                        self.object_seen = True
                         surface.blit(pygame.transform.scale(self.sprites[sprite[2]][texX], (1, spriteHeight)), (stripe, drawStartY))
-        return 0
 
 class Camera(object):
     def __init__(self,x,y,dirx,diry,planex,planey):
